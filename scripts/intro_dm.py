@@ -2,14 +2,15 @@
 import json, os, time, urllib.request, urllib.error
 from datetime import datetime, timedelta, timezone
 
-TOKEN = os.environ["DISCORD_BOT_TOKEN"]
+TOKEN = os.environ["DISCORD_BOT_TOKEN"].strip()
 GUILD_ID = os.environ.get("GUILD_ID", "878003622917587034")
 API = "https://discord.com/api/v10"
 
 def req(method, path, body=None):
     data = json.dumps(body).encode() if body is not None else None
     r = urllib.request.Request(API + path, data=data, method=method, headers={
-        "Authorization": f"Bot {TOKEN}", "Content-Type": "application/json"})
+        "Authorization": f"Bot {TOKEN}", "Content-Type": "application/json",
+        "User-Agent": "DiscordBot (https://github.com/flfang9/subhub-ops, 1.0)"})
     with urllib.request.urlopen(r) as resp:
         raw = resp.read()
         return json.loads(raw) if raw else {}
