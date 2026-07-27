@@ -1,0 +1,14 @@
+name: intro-dm
+on:
+  schedule:
+    - cron: "0 15 * * *"   # daily 15:00 UTC = 11am EDT
+  workflow_dispatch:
+jobs:
+  dm:
+    runs-on: ubuntu-latest
+    if: vars.INTRO_DM_ENABLED == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/intro_dm.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}

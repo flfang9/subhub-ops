@@ -1,0 +1,19 @@
+name: monday-checkin
+on:
+  schedule:
+    - cron: "0 13 * * 1"   # Mondays 13:00 UTC = 9am EDT
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: "post then immediately delete (e2e test)"
+        type: boolean
+        default: false
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/post_checkin.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          TEST_DELETE: ${{ inputs.test_mode && 'true' || 'false' }}
