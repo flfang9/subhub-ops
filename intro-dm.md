@@ -1,6 +1,6 @@
-hey {name} — Freddy from the App Leaders by Adapty Discord 👋 saw you joined yesterday.
+hey {name}, Freddy from the App Leaders by Adapty Discord 👋 saw you joined yesterday.
 
-fastest way to actually get something out of this server: post one line in #general-chat —
+the fastest way to actually get something out of this server: post one line in #general-chat —
 **building:** ___ · **stage:** pre-launch / $__ MRR · **stuck on:** ___
 
-the regulars genuinely answer. see you in there.
+let's get your app rich. live sessions every week too. see you in there.
