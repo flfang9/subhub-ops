@@ -1,6 +1,5 @@
 hey {name}, Freddy from the App Leaders by Adapty Discord 👋 saw you joined yesterday.
 
-the fastest way to actually get something out of this server: post one line in #general-chat —
-**building:** ___ · **stage:** ___ · **stuck on:** ___
+quick one — what are you building? doesn't have to be launched or even coded yet. an idea counts. reply right here, I read every one of these.
 
-let's get your app rich. live sessions every week too. see you in there.
+and when you're ready, drop it in #general-chat too — that's where people a few steps ahead of you hang out. live sessions every week. let's get your app rich.
