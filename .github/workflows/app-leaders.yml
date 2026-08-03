@@ -1,0 +1,21 @@
+name: app-leaders
+on:
+  schedule:
+    - cron: "15,45 * * * *"   # verifier sweep, twice an hour
+    - cron: "0 14 * * 1"      # Mondays 14:00 UTC = verifier + stale-applicant nudge DMs
+  workflow_dispatch:
+    inputs:
+      nudge:
+        description: "also DM pending applicants who never opened a ticket"
+        type: boolean
+        default: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    if: vars.APP_LEADERS_ENABLED == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/app_leaders_verifier.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          NUDGE: ${{ (github.event.schedule == '0 14 * * 1' || inputs.nudge) && '1' || '0' }}
