@@ -34,4 +34,17 @@ Dry run prints every write it would make and the config it would generate; nothi
 5. Delete Freddy's old June 8 messages in #join-app-leaders (they still pitch Five/Six Figures; the bot can't delete another user's messages), and update the Dyno ticket-panel embed copy to match.
 6. Set repo variable `APP_LEADERS_ENABLED=true` (Settings → Secrets and variables → Actions → Variables).
 
+## Country roles (Channels & Roles tab, not the join flow)
+
+`scripts/set_country_prompt.py` re-adds a "Where are you based?" question built from the 44 existing
+country roles (flag emoji included), with `in_onboarding=False` — it never appears during join, only
+in the server's **Channels & Roles** tab for post-join self-assign (same mechanism as the "What do
+you want most" question). Dry-run by default; it backs up the full onboarding config to
+`~/.config/discord-audit/onboarding-backup-<date>.json` before writing, because the onboarding PUT
+replaces the entire prompts array. Requires the bot to have **Manage Server** + Manage Roles.
+
+```bash
+DISCORD_BOT_TOKEN=$(cat ~/.config/discord-audit/token) python3 scripts/set_country_prompt.py --execute
+```
+
 **Kill switch:** set `APP_LEADERS_ENABLED` to anything but `true` (or delete it) — the job's `if:` gate stops both the sweeps and the Monday nudge immediately. Copy edits are just the `.md` files. Every write is latched behind the `[AL-VERIFY]` embed footer, so re-running is always safe.
