@@ -1,7 +1,7 @@
 name: monday-checkin
 on:
   schedule:
-    - cron: "0 13 * * 1"   # Mondays 13:00 UTC = 9am EDT
+    - cron: "0 11 * * 1"   # Mondays 11:00 UTC = 7am EDT; GH cron queue runs 2-3h late, so this lands ~9am
   workflow_dispatch:
     inputs:
       test_mode:
