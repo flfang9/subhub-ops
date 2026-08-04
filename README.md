@@ -41,7 +41,7 @@ country roles (flag emoji included), with `in_onboarding=False` — it never app
 in the server's **Channels & Roles** tab for post-join self-assign (same mechanism as the "What do
 you want most" question). Dry-run by default; it backs up the full onboarding config to
 `~/.config/discord-audit/onboarding-backup-<date>.json` before writing, because the onboarding PUT
-replaces the entire prompts array. Requires the bot to have **Manage Server** + Manage Roles.
+replaces the entire prompts array. Requires the bot to have **Manage Server** + Manage Roles, and its role dragged ABOVE the country roles (they sit near the top of the list): the script also sets each flag as the role ICON, so the flag shows next to member names in chat (tier-3 perk).
 
 ```bash
 DISCORD_BOT_TOKEN=$(cat ~/.config/discord-audit/token) python3 scripts/set_country_prompt.py --execute

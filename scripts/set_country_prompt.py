@@ -53,7 +53,7 @@ def req(method, path, body=None):
     raise RuntimeError(f"rate-limited too long: {path}")
 
 roles = req("GET", f"/guilds/{GUILD_ID}/roles")
-by_name = {r["name"]: r["id"] for r in roles}
+by_name = {r["name"]: r for r in roles}
 
 options, missing = [], []
 for name, iso in sorted(ISO.items()):
@@ -61,13 +61,31 @@ for name, iso in sorted(ISO.items()):
         missing.append(name)
         continue
     options.append({"id": str(len(options) + 1), "title": name, "description": "",
-                    "emoji_name": flag(iso), "role_ids": [by_name[name]], "channel_ids": []})
+                    "emoji_name": flag(iso), "role_ids": [by_name[name]["id"]], "channel_ids": []})
 if "OTHER_COUNTRY" in by_name:
     options.append({"id": str(len(options) + 1), "title": "Other country", "description": "",
-                    "emoji_name": "🌍", "role_ids": [by_name["OTHER_COUNTRY"]], "channel_ids": []})
+                    "emoji_name": "🌍", "role_ids": [by_name["OTHER_COUNTRY"]["id"]], "channel_ids": []})
 else:
     missing.append("OTHER_COUNTRY")
 print(f"{len(options)} country options built" + (f"; MISSING roles: {missing}" if missing else ""))
+
+# role icons: flag shows next to the member's name in chat (server is boost tier 3).
+# needs the bot's role dragged ABOVE the country roles (they sit up to position ~121).
+print("\nrole icons:")
+icons = [(n, flag(i)) for n, i in sorted(ISO.items())] + [("OTHER_COUNTRY", "🌍")]
+for name, emoji in icons:
+    r = by_name.get(name)
+    if not r:
+        continue
+    if r.get("unicode_emoji") == emoji:
+        continue  # already set, keep re-runs quiet
+    print(f"  {'set' if EXECUTE else 'would set'} {emoji} on role '{name}'")
+    if EXECUTE:
+        try:
+            req("PATCH", f"/guilds/{GUILD_ID}/roles/{r['id']}", {"unicode_emoji": emoji})
+            time.sleep(0.5)
+        except urllib.error.HTTPError:
+            print(f"  !! failed on '{name}' (is the bot's role above the country roles?)")
 
 ob = req("GET", f"/guilds/{GUILD_ID}/onboarding")
 backup = Path.home() / ".config" / "discord-audit" / f"onboarding-backup-{date.today()}.json"
