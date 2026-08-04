@@ -43,6 +43,6 @@ for m in targets:
         req("POST", f"/channels/{dm['id']}/messages", {"content": template.replace("{name}", name)})
         sent += 1
     except urllib.error.HTTPError as e:
-        failed += 1  # DMs closed / privacy settings — expected for some
+        failed += 1  # DMs closed / privacy settings, expected for some
     time.sleep(1.5)
 print(f"sent={sent} failed={failed}")

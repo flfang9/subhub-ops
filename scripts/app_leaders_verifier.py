@@ -14,7 +14,7 @@ OK, NO = "✅", "❌"
 CFG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app_leaders_config.json")
 
 if not os.path.exists(CFG_PATH):
-    print("no scripts/app_leaders_config.json — run app_leaders_migrate.py --execute first")
+    print("no scripts/app_leaders_config.json, run app_leaders_migrate.py --execute first")
     raise SystemExit(0)
 cfg = json.load(open(CFG_PATH))
 GUILD, STAFF = cfg["guild_id"], set(cfg["staff_role_ids"])
@@ -37,7 +37,7 @@ def req(method, path, body=None):
                 time.sleep(float(json.load(e).get("retry_after", 2)) + 0.2)
                 continue
             if e.code in (403, 404):
-                return None  # no access to this ticket / DMs closed — caller counts it
+                return None  # no access to this ticket / DMs closed, caller counts it
             raise
     raise RuntimeError(f"rate-limited too long: {path}")
 
@@ -66,7 +66,7 @@ reject_copy = open("reject-app-leader.md").read().strip()
 def applicant_of(ch, msgs):
     """The one human member-type (1) overwrite that isn't this bot; else earliest non-bot author."""
     ids = [o["id"] for o in ch.get("permission_overwrites", []) if str(o.get("type")) in ("1", "member") and o["id"] != ME]
-    if len(ids) > 1:  # Dyno adds itself as a member overwrite on its tickets — drop bot accounts
+    if len(ids) > 1:  # Dyno adds itself as a member overwrite on its tickets, drop bot accounts
         ids = [i for i in ids if not (req("GET", f"/users/{i}") or {}).get("bot")]
     if len(ids) == 1: return ids[0]
     for m in sorted(msgs or [], key=lambda m: m["timestamp"]):
@@ -92,7 +92,7 @@ seen_applicants = set()
 for ch in tickets:
     msgs = req("GET", f"/channels/{ch['id']}/messages?limit=50")
     if msgs is None:
-        print(f"  #{ch['name']}: 403 — no access, skipped")
+        print(f"  #{ch['name']}: 403, no access, skipped")
         bump("skipped_403")
         continue
     bump("tickets_seen")
@@ -104,7 +104,7 @@ for ch in tickets:
         posted = write("POST", f"/channels/{ch['id']}/messages", {"embeds": [{
             "title": "App Leaders verification", "color": 0xE8B54D,
             "description": ("Post below: **app name**, **App Store / Play link**, and a **screenshot of your MRR**"
-                            " (App Store Connect, Play Console, RevenueCat, Adapty — whatever you use).\n"
+                            " (App Store Connect, Play Console, RevenueCat, Adapty, whatever you use).\n"
                             "This ticket is private: staff only, never shared publicly.\n\n"
                             f"**Staff:** react {OK} on this message to approve, {NO} to reject."),
             "footer": {"text": f"{MARKER} open"}}]})
@@ -124,7 +124,7 @@ for ch in tickets:
         bump("awaiting")
         continue
     if not uid:
-        print(f"  #{ch['name']}: {verdict} but applicant unidentifiable — left open")
+        print(f"  #{ch['name']}: {verdict} but applicant unidentifiable, left open")
         bump("no_applicant")
         continue
 
@@ -138,7 +138,7 @@ for ch in tickets:
         write("POST", f"/channels/{cfg['log_channel_id']}/messages",
               {"content": f"{OK} {name} approved for App Leaders by {staff_name}"})
         write("POST", f"/channels/{ch['id']}/messages",
-              {"content": f"{OK} verified — you're in. See <#{cfg['app_leaders_channel_id']}>."})
+              {"content": f"{OK} verified, you're in. See <#{cfg['app_leaders_channel_id']}>."})
         close(ch, decision, "approved")
         print(f"  #{ch['name']}: APPROVED {name} (by {staff_name})")
         bump("approved")

@@ -1,4 +1,4 @@
-{mention} just got verified — welcome to App Leaders 🎉
+{mention} just got verified. welcome to App Leaders 🎉
 
 drop an intro when you get a sec:
 · what you're building

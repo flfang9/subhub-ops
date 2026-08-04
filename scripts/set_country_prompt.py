@@ -84,15 +84,15 @@ payload = {"prompts": kept + [country_prompt], "enabled": ob["enabled"],
 
 print(f"prompts after: {[p['title'] for p in payload['prompts']]}")
 if not EXECUTE:
-    print("\ndry run — nothing written. re-run with --execute to apply.")
+    print("\ndry run, nothing written. re-run with --execute to apply.")
     raise SystemExit(0)
 
 req("PUT", f"/guilds/{GUILD_ID}/onboarding", payload)
 check = req("GET", f"/guilds/{GUILD_ID}/onboarding")
 got = next((p for p in check["prompts"] if p["title"].strip() == PROMPT_TITLE), None)
 if got and len(got["options"]) == len(options) and not got["in_onboarding"]:
-    print(f"OK — '{PROMPT_TITLE}' live with {len(got['options'])} options, "
+    print(f"OK, '{PROMPT_TITLE}' live with {len(got['options'])} options, "
           "hidden from the join flow (Channels & Roles tab only)")
 else:
-    print("!! verify failed — check Server Settings -> Onboarding; "
+    print("!! verify failed, check Server Settings -> Onboarding; "
           f"restore from {backup} if the prompt list looks wrong")

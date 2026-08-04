@@ -60,13 +60,13 @@ def act(kind, label, method, path, body=None):
     try:
         out = req(method, path, body)
     except urllib.error.HTTPError as e:
-        print(f"        !! HTTP {e.code} — skipped")
+        print(f"        !! HTTP {e.code}, skipped")
         bump(f"failed:{e.code}")
         return None
     time.sleep(0.5)
     return out
 
-print("=== App Leaders migration —", "EXECUTE" if EXECUTE else "DRY RUN (no writes)", "===\n")
+print("=== App Leaders migration:", "EXECUTE" if EXECUTE else "DRY RUN (no writes)", "===\n")
 
 roles = {r["id"]: r for r in req("GET", f"/guilds/{GUILD_ID}/roles")}
 channels = {c["id"]: c for c in req("GET", f"/guilds/{GUILD_ID}/channels")}
@@ -139,7 +139,7 @@ if archive_cat:
         act("ch_move", f"move #{cname(cid)} -> {archive_cat['name']}",
             "PATCH", f"/channels/{cid}", {"parent_id": archive_cat["id"]})
 else:
-    print("  !! no ARCHIVE category found — skipping all moves")
+    print("  !! no ARCHIVE category found, skipping all moves")
     bump("failed:no-archive")
 
 print("  permission overwrites (private club):")
@@ -157,7 +157,7 @@ for cid, label in [(five_cat["id"] if five_cat else None, "💎 App Leaders cate
 if six_cat and archive_cat:
     act("ch_delete", f"delete now-empty category '{six_cat['name']}'", "DELETE", f"/channels/{six_cat['id']}")
 elif six_cat:
-    print(f"  !! keeping '{six_cat['name']}' — no ARCHIVE category, its channels were not moved")
+    print(f"  !! keeping '{six_cat['name']}', no ARCHIVE category, its channels were not moved")
 
 # 5. post the join copy
 print("\n[5] copy")
@@ -173,4 +173,4 @@ for rid in CLAIM_ROLES + VERIFIED_ROLES:
 
 print("\n=== report ===")
 for k in sorted(n): print(f"  {k}: {n[k]}")
-if not EXECUTE: print("\ndry run — nothing was written. re-run with --execute to apply.")
+if not EXECUTE: print("\ndry run, nothing was written. re-run with --execute to apply.")
