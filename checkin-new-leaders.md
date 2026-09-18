@@ -1,1 +1,1 @@
-new app leaders, i want to hear from you 👋 {mentions}
+new app leaders, let us know what you're cooking 👋 {mentions}
