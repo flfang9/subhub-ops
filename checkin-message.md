@@ -3,3 +3,5 @@
 · what's stuck?
 · any MRR movement? (flat weeks count too, that's data)
 one line is plenty. reply below 👇
+
+{new_leaders}

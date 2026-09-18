@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       test_mode:
-        description: "post then immediately delete (e2e test)"
+        description: "post then immediately delete (e2e test); pings nobody"
         type: boolean
         default: false
 jobs:
