@@ -1,1 +1,1 @@
-new app leaders this week, you go first 👋 {mentions}
+new app leaders, i want to hear from you 👋 {mentions}
